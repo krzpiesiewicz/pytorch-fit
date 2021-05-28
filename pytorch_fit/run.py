@@ -24,8 +24,8 @@ def print_progress(batch_idx, batch_size, total_size, prefix="", suffix=""):
     else:
         progress_bar = "=" * (progress - 1) + ">" + " " * (total - progress)
     progress_bar = (
-            progress_bar[:numbers_start_pos] + bar_numbers \
-            + progress_bar[numbers_end_pos:]
+            progress_bar[:numbers_start_pos] + bar_numbers +
+            progress_bar[numbers_end_pos:]
     )
     print("\r" + "%s[%s] %s" % (prefix, progress_bar, suffix), end="")
 

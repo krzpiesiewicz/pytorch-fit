@@ -24,7 +24,8 @@ setuptools.setup(
         "torch>=1.8.0",
         "matplotlib>=3.2.2",
         "IPython>=5.5.0",
+        "plotly>=4.5.0",
     ],
-    test_requirements=[],
+    test_requirements=["pytest>=6.2.0"],
     python_requires='>=3.6',
 )
