@@ -5,25 +5,31 @@ from plotly.subplots import make_subplots
 
 
 def plotly_history(
-        history,
-        title=None,
-        fontsize=14,
-        yscale=None,
-        yticks=10,
-        xticks=10,
+    history,
+    title=None,
+    fontsize=14,
+    yscale=None,
+    yticks=10,
+    xticks=10,
+    ax_width = 515,
+    ax_height = 450,
+    width = None,
+    height = None,
 ):
     n = len(history.keys())
-    ax_width = 450
-    ax_height = 500
     if n > 1:
         ncols = 2
         nrows = int(np.ceil(n / ncols))
-        width = 2 * ax_width
-        height = ax_height * nrows
+        if width is None:
+            width = 2 * ax_width
+        if height is None:
+            height = ax_height * nrows
     else:
         ncols = nrows = 1
-        width = ax_width
-        height = ax_height
+        if width is None:
+            width = ax_width
+        if height is None:
+            height = ax_height
 
     rows_and_cols = [(row, col) for row in
                      range(1, nrows + 1) for col in range(1, ncols + 1)]
@@ -69,6 +75,8 @@ def plotly_history(
                            text=legend_text, bgcolor="white",
                            align="left")
 
+    width = int(width * 0.9)
+    height = int(height * 0.9)
     fig.update_layout(width=width, height=height,
                       margin=dict(l=0, r=0, t=50, b=0),
                       font_size=fontsize,
