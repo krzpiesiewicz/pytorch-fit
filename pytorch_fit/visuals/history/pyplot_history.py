@@ -2,7 +2,13 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def pyplot_history(history, title=None, fontsize=14):
+def pyplot_history(
+    history,
+    title=None,
+    fontsize=14,
+    xmargin=None,
+    ymargin=None,
+):
     n = len(history.keys())
     if n > 1:
         ncols = 2
@@ -11,6 +17,7 @@ def pyplot_history(history, title=None, fontsize=14):
     else:
         ncols = nrows = 1
         figsize = (9, 6)
+    plt.ioff()
     plt.rcParams.update({"font.size": fontsize})
     fig = plt.figure(figsize=figsize, frameon=False)
     axs = fig.subplots(nrows, ncols)
@@ -19,7 +26,12 @@ def pyplot_history(history, title=None, fontsize=14):
         for label, values in labels.items():
             ax.plot(range(1, len(values) + 1), values, label=label)
         ax.legend()
+        ax.xaxis.grid(True, which="major")
+        ax.yaxis.grid(True, which="major")
+    if xmargin is not None:
+        ax.set_xmargin(xmargin)
+    if ymargin is not None:
+        ax.set_ymargin(ymargin)
     if title is not None:
         fig.suptitle(title, fontsize=24)
-    print(fig)
     return fig
