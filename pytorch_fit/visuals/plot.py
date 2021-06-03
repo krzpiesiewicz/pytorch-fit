@@ -2,10 +2,10 @@ from .history.pyplot_history import pyplot_history
 from .history.plotly_history import plotly_history
 
 
-def plot_history(history, title=None, engine="pyplot"):
+def plot_history(history, engine="pyplot", **kwargs):
     if engine == "pyplot":
-        pyplot_history(history, title)
+        return pyplot_history(history, **kwargs)
     elif engine == "plotly":
-        plotly_history(history, title)
+        return plotly_history(history, **kwargs)
     else:
         raise Exception("Unknown plotting engine")

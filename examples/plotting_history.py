@@ -49,7 +49,11 @@ history = {'Loss': {'train_loss': [0.4477573685088561,
                                     0.994,
                                     0.9927]}}
 
+def main():
+    fig = plot_history(history, engine="plotly", title="Plotting History")
+    fig.show()
+    fig = plot_history(history, title="Plotting History")
+    fig.show()
 
-def test_plotly():
-    plot_history(history, engine="plotly")
-
+if __name__ == "__main__":
+    main()

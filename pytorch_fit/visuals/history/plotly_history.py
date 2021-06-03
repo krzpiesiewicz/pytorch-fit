@@ -4,7 +4,14 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 
-def plotly_history(history, title=None):
+def plotly_history(
+        history,
+        title=None,
+        fontsize=14,
+        yscale=None,
+        yticks=10,
+        xticks=10,
+):
     n = len(history.keys())
     ax_width = 450
     ax_height = 500
@@ -18,16 +25,24 @@ def plotly_history(history, title=None):
         width = ax_width
         height = ax_height
 
-    fig = make_subplots(rows=nrows, cols=ncols,
+    rows_and_cols = [(row, col) for row in
+                     range(1, nrows + 1) for col in range(1, ncols + 1)]
+
+    fig = make_subplots(rows=nrows,
+                        cols=ncols,
                         subplot_titles=list(history.keys()),
                         horizontal_spacing=0.05,
                         vertical_spacing=0.08 / (nrows - 1) if nrows > 1
                         else 0)
-    row = col = 1
-    subplot_no = 1
     colors = list(mcolors.TABLEAU_COLORS.values())
 
-    for key, labels in history.items():
+    for subplot_no, ((key, labels), (row, col)) in enumerate(
+            zip(
+                history.items(),
+                rows_and_cols
+            )
+    ):
+        subplot_no += 1
         max_y = -np.inf
         max_x = -np.inf
         legend_text = ""
@@ -40,30 +55,35 @@ def plotly_history(history, title=None):
             max_x = max(max_x, len(values) + 1)
             fig.add_trace(
                 go.Scatter(x=xs, y=values,
-                           line={"color": colors[idx]}, mode="lines+markers",
+                           line=dict(color=colors[idx]),
+                           mode="lines+markers",
                            name="", legendgroup=key, showlegend=False,
                            hovertemplate=f"{label}: " + "%{y}",
-                           marker={"size": 0.1}),
+                           marker=dict(size=0.1)),
                 row=row, col=col
             )
-        fig.add_annotation({"xref": f"x{subplot_no}", "yref": f"y{subplot_no}",
-                            "showarrow": False,
-                            "x": max_x, "y": max_y, "yshift": 10,
-                            "text": legend_text, "bgcolor": "white",
-                            "align": "left"})
-        subplot_no += 1
-        col += 1
-        if col > ncols:
-            col = 1
-            row += 1
+        fig.add_annotation(xref=f"x{subplot_no}",
+                           yref=f"y{subplot_no}",
+                           showarrow=False,
+                           x=max_x, y=max_y, yshift=10,
+                           text=legend_text, bgcolor="white",
+                           align="left")
 
-    fig.update_layout({"width": width, "height": height,
-                       "margin": {"l": 0, "r": 0, "t": 50, "b": 0},
-                       "template": "simple_white", "hovermode": "x unified"})
+    fig.update_layout(width=width, height=height,
+                      margin=dict(l=0, r=0, t=50, b=0),
+                      font_size=fontsize,
+                      title=title,
+                      title_x=0.5,
+                      template="simple_white",
+                      hovermode="x unified")
     fig.update_yaxes(showgrid=True)
     fig.update_xaxes(showgrid=True)
+    if yscale is not None:
+        fig.update_yaxes(type=yscale)
+    if yticks is not None:
+        fig.update_yaxes(nticks=yticks)
+    if xticks is not None:
+        fig.update_xaxes(nticks=xticks)
 
-    if title is not None:
-        fig.update_layout({"font_size": 16, "title": title})
     fig.update_annotations({"yanchor": "bottom", "xanchor": "right"})
-    fig.show()
+    return fig
