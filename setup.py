@@ -19,8 +19,8 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        "pandas>=1.1.5",
-        "numpy>=1.19.5",
+        "pandas>=1.0.5",
+        "numpy>=1.18.5",
         "torch>=1.8.0",
         "matplotlib>=3.2.2",
         "IPython>=5.5.0",
