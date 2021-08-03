@@ -7,27 +7,27 @@ import pandas as pd
 class Metric(ABC):
     @abstractmethod
     def reset_state(self):
-        pass
+        ...
 
     @abstractmethod
     def update_state(self, y_pred, y_true):
-        pass
+        ...
 
     @abstractmethod
     def value(self):
-        pass
+        ...
 
     @abstractmethod
     def is_value_simple(self):
-        pass
+        ...
 
     @abstractmethod
     def name(self):
-        pass
+        ...
 
     @abstractmethod
     def short_name(self):
-        pass
+        ...
 
 
 class Accuracy(Metric):

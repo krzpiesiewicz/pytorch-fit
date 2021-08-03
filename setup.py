@@ -12,15 +12,15 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/krzpiesiewicz/pytorch-fit",
-    packages=setuptools.find_packages(exclude=['tests']),
+    packages=setuptools.find_packages(exclude=['tests', 'examples']),
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        "pandas>=1.1.5",
-        "numpy>=1.19.5",
+        "pandas>=1.0.5",
+        "numpy~=1.19.0",
         "torch>=1.8.0",
         "matplotlib>=3.2.2",
         "IPython>=5.5.0",
