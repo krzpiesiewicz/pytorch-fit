@@ -3,11 +3,11 @@ from matplotlib import pyplot as plt
 
 
 def pyplot_history(
-    history,
-    title=None,
-    fontsize=14,
-    xmargin=None,
-    ymargin=None,
+        history,
+        title=None,
+        fontsize=14,
+        xmargin=None,
+        ymargin=None,
 ):
     n = len(history.keys())
     if n > 1:
@@ -21,6 +21,8 @@ def pyplot_history(
     plt.rcParams.update({"font.size": fontsize})
     fig = plt.figure(figsize=figsize, frameon=False)
     axs = fig.subplots(nrows, ncols)
+    if n == 1:
+        axs = [axs]
     for (key, labels), ax in zip(history.items(), axs):
         ax.set_title(key)
         for label, values in labels.items():
