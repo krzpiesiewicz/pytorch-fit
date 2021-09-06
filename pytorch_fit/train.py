@@ -7,8 +7,9 @@ from .run import run
 
 
 def train_epoch(model, device, optimizer, loss, train_loader, val_loader=None,
-                metrics=[], epoch=1, history=None, newline=True,
-                start_time=None):
+                metrics=[], metrics_val_only=False, epoch=1, history=None,
+                newline=True, start_time=None, **kwargs):
+    train_metrics = [] if metrics_val_only else metrics
     if start_time is None:
         start_time = time.time()
     res, train_output = run(
@@ -16,11 +17,12 @@ def train_epoch(model, device, optimizer, loss, train_loader, val_loader=None,
         device,
         loss,
         train_loader,
-        metrics,
+        train_metrics,
         optimizer,
         batch_prefix=f"\rEpoch {epoch:4}:   Training: ",
         loss_metric_prefix="train_",
         start_time=start_time,
+        **kwargs
     )
     if val_loader is not None:
         val_res, val_output = run(
@@ -32,10 +34,12 @@ def train_epoch(model, device, optimizer, loss, train_loader, val_loader=None,
             start_time=start_time,
             batch_prefix=f"\rEpoch {epoch:4}: Validating: ",
             loss_metric_prefix="val_",
+            **kwargs
         )
         add_to_history(res, val_res)
     print(
-        f"\rEpoch {epoch:4}:  {train_output},{val_output}, elapsed time: {time.time() - start_time:.1f}s",
+        f"\rEpoch {epoch:4}:  {train_output},{val_output}, elapsed time: "
+        f"{time.time() - start_time:.1f}s ",
         end="\n" if newline else "",
     )
     if history is None:
@@ -46,7 +50,7 @@ def train_epoch(model, device, optimizer, loss, train_loader, val_loader=None,
 
 def fit(network, device, optimizer, loss, train_loader, val_loader=None,
         metrics=[], lr=None, n_epochs=300, initial_epoch=1, last_epoch=None,
-        history=None, stop_cond=None):
+        history=None, stop_cond=None, **kwargs):
     if history is None:
         history = {}
     if n_epochs > 50:
@@ -76,7 +80,8 @@ def fit(network, device, optimizer, loss, train_loader, val_loader=None,
             start_time = time.time()
             show = True
         train_epoch(network, device, optimizer, loss, train_loader,
-                    val_loader, metrics, epoch, history, show, start_time)
+                    val_loader, metrics, epoch=epoch, history=history,
+                    newline=show, start_time=start_time, **kwargs)
         if stop_cond and stop_cond(history):
             break
     return history

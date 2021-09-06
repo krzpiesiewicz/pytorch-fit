@@ -10,7 +10,7 @@ class Metric(ABC):
         ...
 
     @abstractmethod
-    def update_state(self, y_pred, y_true):
+    def update_state(self, y_pred, y_true, *args):
         ...
 
     @abstractmethod
@@ -39,7 +39,7 @@ class Accuracy(Metric):
         self.corrects = 0
         self.all_samples = 0
 
-    def update_state(self, y_pred, y_true):
+    def update_state(self, y_pred, y_true, *args):
         y_pred = y_pred.cpu().detach().numpy()
         y_true = y_true.cpu().detach().numpy()
 
@@ -74,7 +74,7 @@ class ConfusionMatrix(Metric):
             index=pd.Index(self.all_labels, name="predicted:"),
         )
 
-    def update_state(self, y_pred, y_true):
+    def update_state(self, y_pred, y_true, *args):
         y_pred = y_pred.cpu().detach().numpy()
         y_true = y_true.cpu().detach().numpy()
 
