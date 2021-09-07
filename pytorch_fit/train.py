@@ -62,10 +62,10 @@ def fit(network, device, optimizer, loss, train_loader, val_loader=None,
         if optimizer == "Adam":
             optimizer = optim.Adam(network.parameters())
         if optimizer == "SGD":
-            optimizer = optim.SGD(network.parameters())
+            optimizer = optim.SGD(network.parameters(), lr=1e-3)
     if lr is not None:
         for g in optimizer.param_groups:
-            g["lr"] = 0.001
+            g["lr"] = 1e-3
 
     if last_epoch is not None:
         initial_epoch = last_epoch + 1
@@ -73,7 +73,7 @@ def fit(network, device, optimizer, loss, train_loader, val_loader=None,
 
     for epoch in range(initial_epoch, initial_epoch + n_epochs):
         if interval > 1:
-            if epoch % interval == 1:
+            if epoch % interval == 1 or epoch == initial_epoch:
                 start_time = time.time()
             show = epoch % interval == 0
         else:

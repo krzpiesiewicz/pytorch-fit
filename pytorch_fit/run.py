@@ -46,7 +46,9 @@ def run(
         start_time=None,
         return_batches_outputs=False,
         reset=False,
-        reset_after_batch=False,
+        reset_after_train_batch=False,
+        callback_before_train_batch=None,
+        callback_after_train_batch=None,
         mute=False,
         debug=False
 ):
@@ -93,15 +95,19 @@ def run(
                 metric_details_list = []
             target = target.to(device)
 
-            if reset_after_batch:
-                model.reset()
             if optimizer is not None:
+                if callback_before_train_batch is not None:
+                    callback_before_train_batch()
                 optimizer.zero_grad()
             batch_output = model(*data)
             loss_value = loss(batch_output, target)
             if optimizer is not None:
                 loss_value.backward()
                 optimizer.step()
+                if reset_after_train_batch:
+                    model.reset()
+                if callback_after_train_batch is not None:
+                    callback_after_train_batch()
             losses.append(loss_value.item())
             loss_value = sum(losses) / len(losses)  # reduction == "sum"
             if reduction == "mean":
