@@ -15,7 +15,7 @@ def print_progress(batch_idx, batch_size, total_size, prefix="", suffix=""):
         n *= 10
     bar_numbers = "%d/%d(%d%%)" % (current, total_size, int(100 * ratio))
     max_numbers_len = len("%d/%d(%d%%)" % (total_size, total_size, 100))
-    total = 100 - len(suffix) - len(prefix)
+    total = 95 - len(suffix) - len(prefix)
     numbers_start_pos = int((total - max_numbers_len) / 2) + shift
     numbers_end_pos = numbers_start_pos + len(bar_numbers)
     progress = int(ratio * total)
@@ -121,7 +121,7 @@ def run(
                     metric_value_str = value_precision_str(metric.value())
                     suffix += f", {metric.short_name()}: {metric_value_str}"
             if start_time is not None:
-                suffix += f", elapsed time: {time.time() - start_time:.1f}s"
+                suffix += f", elapsed time: {time.time() - start_time:.1f}s  "
             if not mute:
                 print_progress(batch_idx + 1, batch_size, total_size,
                                batch_prefix, suffix)

@@ -39,7 +39,7 @@ def train_epoch(model, device, optimizer, loss, train_loader, val_loader=None,
         add_to_history(res, val_res)
     print(
         f"\rEpoch {epoch:4}:  {train_output},{val_output}, elapsed time: "
-        f"{time.time() - start_time:.1f}s ",
+        f"{time.time() - start_time:.1f}s  ",
         end="\n" if newline else "",
     )
     if history is None:
