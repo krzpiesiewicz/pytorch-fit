@@ -1,6 +1,6 @@
 # pytorch-fit
 
-pytorch-fit is a library consisting of useful tools for fitting and evaluating pytorch models:
+`pytorch-fit` is a package which consists of useful tools for fitting and evaluating pytorch models:
 * automated customizable training with online console-like visualization,
 * stopping conditions based on training and validation losses and metrics,
 * custom loss and metric functions support,
